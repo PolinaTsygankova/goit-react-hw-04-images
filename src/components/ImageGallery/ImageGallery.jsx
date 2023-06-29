@@ -1,56 +1,94 @@
-import React from 'react';
+import { useState } from 'react';
 // import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
 import { Gallery } from './ImageGallery.styled';
 import { ImageGalleryItem } from './../ImageGalleryItem/ImageGalleryItem';
 import { Modal } from './../Modal/Modal';
 
-export class ImageGallery extends React.Component {
-  state = {
-    showModal: false,
-    largeImage: '',
-  };
+export function ImageGallery() {
+  const [showModal, setShowModal] = useState(false);
+  const [largeImage, setLargeImage] = useState('');
 
-  toggleModal = e => {
-    this.setState(prevState => ({
-      showModal: !prevState.showModal,
-    }));
-  };
-
-  getLargeImgForModal = largeImage => {
-    this.setState({
-      largeImage: largeImage,
-    });
-  };
-
-  render() {
-    const { images } = this.props;
-    const { largeImage, showModal } = this.state;
-
-    return (
-      <>
-        {images === [] && toast('Wow so easy!')}
-        {images && (
-          <Gallery className="gallery">
-            {images.map(({ id, webformatURL, largeImageURL, tags }) => (
-              <ImageGalleryItem
-                key={id}
-                smallImg={webformatURL}
-                largeImg={largeImageURL}
-                tags={tags}
-                toggleModal={this.toggleModal}
-                getLargeImgForModal={this.getLargeImgForModal}
-              />
-            ))}
-          </Gallery>
-        )}
-        {showModal && (
-          <Modal largeImage={largeImage} toggleModal={this.toggleModal} />
-        )}
-      </>
-    );
+  function toggleModal(e) {
+    setShowModal(prevShowModal => !prevShowModal);
   }
+
+  function getLargeImgForModal(largeImage) {
+    setLargeImage(largeImage);
+  }
+
+  const { images } = this.props;
+
+  return (
+    <>
+      {images === [] && toast('Wow so easy!')}
+      {images && (
+        <Gallery className="gallery">
+          {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+            <ImageGalleryItem
+              key={id}
+              smallImg={webformatURL}
+              largeImg={largeImageURL}
+              tags={tags}
+              toggleModal={toggleModal}
+              getLargeImgForModal={getLargeImgForModal}
+            />
+          ))}
+        </Gallery>
+      )}
+      {showModal && <Modal largeImage={largeImage} toggleModal={toggleModal} />}
+    </>
+  );
 }
+
+//!-----------------------
+
+// export class ImageGallery extends React.Component {
+//   state = {
+//     showModal: false,
+//     largeImage: '',
+//   };
+
+//   toggleModal = e => {
+//     this.setState(prevState => ({
+//       showModal: !prevState.showModal,
+//     }));
+//   };
+
+//   getLargeImgForModal = largeImage => {
+//     this.setState({
+//       largeImage: largeImage,
+//     });
+//   };
+
+//   render() {
+//     const { images } = this.props;
+//     const { largeImage, showModal } = this.state;
+
+//     return (
+//       <>
+//         {images === [] && toast('Wow so easy!')}
+//         {images && (
+//           <Gallery className="gallery">
+//             {images.map(({ id, webformatURL, largeImageURL, tags }) => (
+//               <ImageGalleryItem
+//                 key={id}
+//                 smallImg={webformatURL}
+//                 largeImg={largeImageURL}
+//                 tags={tags}
+//                 toggleModal={this.toggleModal}
+//                 getLargeImgForModal={this.getLargeImgForModal}
+//               />
+//             ))}
+//           </Gallery>
+//         )}
+//         {showModal && (
+//           <Modal largeImage={largeImage} toggleModal={this.toggleModal} />
+//         )}
+//       </>
+//     );
+//   }
+// }
 
 // {
 //   /* // ImageGallery.propTypes = { */
