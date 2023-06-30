@@ -48,6 +48,7 @@ export function App() {
           setStatus(STATUS.RESOLVED);
         }
       })
+      
       .catch(error => {
         setErrorMessage(error.message);
         setStatus(STATUS.REJECTED);
