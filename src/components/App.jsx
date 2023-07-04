@@ -48,12 +48,13 @@ export function App() {
           setStatus(STATUS.RESOLVED);
         }
       })
-      
+
       .catch(error => {
         setErrorMessage(error.message);
+        console.log(errorMessage);
         setStatus(STATUS.REJECTED);
       });
-  }, [textQuery, currentPage]);
+  }, [textQuery, currentPage, errorMessage]);
 
   function getValueFromInput(textQuery) {
     setTextQuery(textQuery);

@@ -1,24 +1,27 @@
 import PropTypes from 'prop-types';
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { Backdrop, StyledModal } from './Modal.styled';
 
 export function Modal({ largeImage, toggleModal }) {
+  const memoizedKeyDown = useCallback(
+    e => {
+      if (e.code === 'Escape' || e.target === e.currentTarget) {
+        toggleModal();
+      }
+    },
+    [toggleModal]
+  );
+
   useEffect(() => {
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', memoizedKeyDown);
 
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener('keydown', memoizedKeyDown);
     };
-  }, []);
-
-  function onKeyDown(e) {
-    if (e.code === 'Escape' || e.target === e.currentTarget) {
-      toggleModal();
-    }
-  }
+  }, [memoizedKeyDown]);
 
   return (
-    <Backdrop className="overlay" onClick={onKeyDown}>
+    <Backdrop className="overlay" onClick={memoizedKeyDown}>
       <StyledModal className="modal">
         <img src={largeImage} alt="LargeImage" />
       </StyledModal>
